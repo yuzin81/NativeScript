@@ -9,7 +9,7 @@
 
 interface AudioBufferList {
 	mNumberBuffers: number;
-	mBuffers: interop.Reference<AudioBuffer>;
+	mBuffers: interop.Reference<any>; //really interop.Reference<AudioBuffer>
 }
 declare var AudioBufferList: interop.StructType<AudioBufferList>;
 
