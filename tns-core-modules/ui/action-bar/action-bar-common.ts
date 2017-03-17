@@ -153,13 +153,21 @@ export class ActionItems implements ActionItemsDefinition {
     }
 
     public addItem(item: ActionItemDefinition): void {
+        this.insertItem(item, -1);
+    }
+
+    public insertItem(item: ActionItemDefinition, index?: number): void {
         if (!item) {
             throw new Error("Cannot add empty item");
         }
 
-        this._items.push(item);
-        item.actionBar = this._actionBar;
+        if (!index || index < 0) {
+            this._items.push(item);
+        } else {
+            this._items.splice(index, 0, item);
+        }
 
+        item.actionBar = this._actionBar;
         this._actionBar._addView(item);
 
         this.invalidate();

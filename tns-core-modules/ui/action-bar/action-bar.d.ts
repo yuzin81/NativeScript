@@ -54,6 +54,13 @@ export class ActionItems {
     addItem(item: ActionItem): void;
 
     /**
+     * Inserts an item at the specified location.
+     * @param item - the item to be added
+     * @param index - the index at which the item should be inserted. Defaults to the last position.
+     */
+    insertItem(item: ActionItem, index?: number): void
+
+    /**
      * Removes an item to the collection.
      * @param item - The item to be removed.
      */

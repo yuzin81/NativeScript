@@ -8,8 +8,40 @@ import { View } from "tns-core-modules/ui/core/view";
 import { fromObject } from "tns-core-modules/data/observable";
 
 // >> actionbar-common-require
-import * as actionBarModule from "tns-core-modules/ui/action-bar";
+import { ActionItem } from "tns-core-modules/ui/action-bar";
 // << actionbar-common-require
+
+export function test_actionItem_inserted_at_location() {
+    let page: Page;
+    let label: Label;
+    const context = { text: "item" };
+
+    const pageFactory = function (): Page {
+        page = new Page();
+        page.bindingContext = context;
+        const firstItem = new ActionItem();
+        firstItem.text = "first";
+        page.actionBar.actionItems.addItem(firstItem);
+
+        const lastItem = new ActionItem();
+        lastItem.text = "last";
+        page.actionBar.actionItems.addItem(lastItem);
+
+        const middleItem = new ActionItem();
+        middleItem.text = "middle";
+        page.actionBar.actionItems.insertItem(middleItem, 1);
+
+        label = new Label();
+        label.text = "Text";
+        page.content = label;
+        return page;
+    };
+
+    helper.navigate(pageFactory);
+
+    const itemTexts = page.actionBar.actionItems.getItems().map(i => i.text).join("|");
+    TKUnit.assertEqual(itemTexts, "first|middle|last", "action items arranged correctly");
+}
 
 export function test_actionItem_inherit_bindingContext() {
     let page: Page;
@@ -19,7 +51,7 @@ export function test_actionItem_inherit_bindingContext() {
     const pageFactory = function (): Page {
         page = new Page();
         page.bindingContext = context;
-        const actionItem = new actionBarModule.ActionItem();
+        const actionItem = new ActionItem();
 
         actionItem.bind({
             sourceProperty: "text",
@@ -187,7 +219,7 @@ export function test_Setting_ActionItems_doesnt_thrown() {
 
     const pageFactory = function (): Page {
         page = new Page();
-        const actionItem = new actionBarModule.ActionItem();
+        const actionItem = new ActionItem();
         actionItem.text = "Item";
         page.actionBar.actionItems.addItem(actionItem);
 
